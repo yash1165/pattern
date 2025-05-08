@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Registration</title>
+</head>
+<body>
+  <h2>Register</h2>
+  <input type="text" id="username" placeholder="Username"><br><br>
+  <input type="password" id="password" placeholder="Password"><br><br>
+  <button onclick="register()">Register</button>
+  <p id="message"></p>
+
+  <script>
+    function register() {
+      let username = document.getElementById("username").value.trim();
+      let password = document.getElementById("password").value;
+
+      if (username === "" || password === "") {
+        document.getElementById("message").textContent = "Please fill in all fields.";
+        return;
+      }
+
+      // Get existing users or initialize empty array
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Check if user already exists
+      let exists = users.find(u => u.username === username);
+      if (exists) {
+        document.getElementById("message").textContent = "User already exists.";
+        return;
+      }
+
+      // Add new user and save
+      users.push({ username: username, password: password });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      document.getElementById("message").textContent = "Registered successfully!";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    }
+  </script>
+</body>
+</html>
